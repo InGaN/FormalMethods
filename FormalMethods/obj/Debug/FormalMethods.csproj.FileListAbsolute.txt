@@ -1,0 +1,9 @@
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\bin\Debug\FormalMethods.exe.config
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\bin\Debug\FormalMethods.exe
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\bin\Debug\FormalMethods.pdb
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.csprojResolveAssemblyReference.cache
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.Properties.Resources.resources
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.csproj.GenerateResource.Cache
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.exe
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.pdb
+c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.Form1.resources
