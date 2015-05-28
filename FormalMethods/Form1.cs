@@ -17,7 +17,7 @@ namespace FormalMethods
             InitializeComponent();
         }
 
-        private void DrawIt()
+        private void drawCircles()
         {
             System.Drawing.Graphics graphics = this.CreateGraphics();
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(50, 50, 150, 150);
@@ -25,9 +25,15 @@ namespace FormalMethods
             graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
         }
 
+        private void parseM()
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            DrawIt();
+
+            drawCircles();
         }
     }
 }
