@@ -17,23 +17,66 @@ namespace FormalMethods
             InitializeComponent();
         }
 
-        private void drawCircles()
-        {
-            System.Drawing.Graphics graphics = this.CreateGraphics();
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(50, 50, 150, 150);
-            graphics.DrawEllipse(System.Drawing.Pens.Black, rectangle);
-            graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
-        }
+        
 
         private void parseM()
         {
+            string[] separators = {">", "\r\n"};
+            string[] input = ((grammarTextBox.Text).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
+            FMCollection[] fmArray = new FMCollection[input.Length / 2];
+            for (int idx = 0; idx < input.Length; idx++) {
+                if(idx%2==0)
+                    fmArray[idx/2] = new FMCollection(input[idx]);
+                else {
+                    string[] steps = (input[idx]).Split('|');                    
+                    (fmArray[idx/2]).addSteps(steps);
+                }                    
+            }
+
+            Console.WriteLine("=== printing steps ===");
+            for (int idx = 0; idx < fmArray.Length; idx++) {
+                Console.WriteLine(fmArray[idx].ToString());
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            parseM();
+            //Form_Drawing formDraw = new Form_Drawing();
+            //formDraw.Show();
+            //formDraw.drawCircles();
+        }
+    }
 
-            drawCircles();
+    public class FMCollection
+    {
+        private string startCharacter;
+        private string[] steps;
+
+        public FMCollection(string character)
+        {
+            startCharacter = character;
+        }
+        public FMCollection(string character, string[] input)
+        {
+            startCharacter = character;
+            steps = input;
+        }
+        public void addSteps(string[] input)
+        {
+            steps = input;
+        }
+        public string ToString()
+        {
+            string output = "(" + startCharacter + ">";
+            for (int idx = 0; idx < steps.Length; idx++) {
+                output += steps[idx];
+                if (idx < steps.Length - 1)
+                    output += "|";
+            }
+            output += ")";
+            return output;
         }
     }
 }

@@ -30,7 +30,7 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.grammarTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.button1, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.grammarTextBox, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.textBox2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
@@ -68,13 +68,13 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(217, 274);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
-            // textBox1
+            // grammarTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 75);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(199, 145);
-            this.textBox1.TabIndex = 1;
+            this.grammarTextBox.Location = new System.Drawing.Point(3, 75);
+            this.grammarTextBox.Multiline = true;
+            this.grammarTextBox.Name = "grammarTextBox";
+            this.grammarTextBox.Size = new System.Drawing.Size(199, 145);
+            this.grammarTextBox.TabIndex = 1;
             // 
             // label1
             // 
@@ -119,7 +119,7 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox grammarTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;

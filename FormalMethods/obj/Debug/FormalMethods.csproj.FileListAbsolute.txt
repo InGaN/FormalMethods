@@ -7,3 +7,4 @@ c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods
 c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.exe
 c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.pdb
 c:\users\kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.Form1.resources
+C:\Users\Kevin\documents\visual studio 2013\Projects\FormalMethods\FormalMethods\obj\Debug\FormalMethods.Form_Drawing.resources
