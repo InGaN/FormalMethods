@@ -17,16 +17,31 @@ namespace FormalMethods
             InitializeComponent();
         }
 
-        public void drawCircles()
+        public void drawDFA(FMCollection[] collection)
         {
             Console.WriteLine("Drawing DFA");
-            System.Drawing.Graphics graphics = this.CreateGraphics();
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(50, 50, 150, 150);
+            for (int idx = 0; idx < collection.Length; idx++) {
+                string character = collection[idx].getStartCharacter();
+                drawCircle(character, 50 + (idx * 80), 50);
+            }
+        }
+
+
+        public void drawCircle(string character, float x, float y)
+        {            
+            var fontFamily = new FontFamily("Verdana");
+            var font = new Font(fontFamily, 32, FontStyle.Regular, GraphicsUnit.Pixel);
+
+            System.Drawing.Graphics graphics = this.CreateGraphics();            
+            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle((int)x, (int)y, 50, 50);
             
-            graphics.FillEllipse(new System.Drawing.SolidBrush(System.Drawing.Color.Blue), rectangle);
+            graphics.FillEllipse(new System.Drawing.SolidBrush(System.Drawing.Color.GhostWhite), rectangle);
             graphics.DrawEllipse(System.Drawing.Pens.Black, rectangle);
 
-            graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
+            //graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
+
+
+            graphics.DrawString(character, font, Brushes.Black, x, y);
         }
        
     }

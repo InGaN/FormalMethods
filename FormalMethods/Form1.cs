@@ -38,14 +38,15 @@ namespace FormalMethods
             for (int idx = 0; idx < fmArray.Length; idx++) {
                 Console.WriteLine(fmArray[idx].ToString());
             }
+
+            Form_Drawing formDraw = new Form_Drawing();
+            formDraw.Show();
+            formDraw.drawDFA(fmArray);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            parseM();
-            //Form_Drawing formDraw = new Form_Drawing();
-            //formDraw.Show();
-            //formDraw.drawCircles();
+            parseM();            
         }
     }
 
@@ -78,5 +79,9 @@ namespace FormalMethods
             output += ")";
             return output;
         }
+
+        public string getStartCharacter() { return startCharacter; }
+        public string[] getSteps() { return steps; }
+
     }
 }
