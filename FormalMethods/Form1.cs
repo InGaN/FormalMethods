@@ -46,7 +46,15 @@ namespace FormalMethods
 
         private void button1_Click(object sender, EventArgs e)
         {
-            parseM();            
+            //parseM(); 
+            Form_Drawing formDraw = new Form_Drawing();
+            formDraw.Show();
+            formDraw.drawNDFA(grammarTextBox.Text);
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

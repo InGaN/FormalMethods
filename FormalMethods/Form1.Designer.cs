@@ -65,8 +65,9 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 156F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(217, 274);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(899, 427);
             this.tableLayoutPanel1.TabIndex = 3;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // grammarTextBox
             // 
@@ -105,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(217, 274);
+            this.ClientSize = new System.Drawing.Size(899, 427);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
