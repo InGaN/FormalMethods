@@ -16,9 +16,37 @@ namespace FormalMethods
 {
     public partial class Form_Drawing : Form
     {
+        List<char> exceptions = new List<char> { '(', ')', '+', '|', '*' };
+
         public Form_Drawing()
         {
             InitializeComponent();
+        }
+
+        public string regExtoNDFA(string regEx)
+        {
+            string startNDFA = "digraph{";
+            string endNDFA = "}";
+            List<char> nodes = new List<char>();
+            for(int i =0 ; i < regEx.Length;i++)
+            {
+                if(!exceptions.Contains(regEx[i]))
+                {
+                    nodes.Add(regEx[i]);
+                }
+                else
+                {
+                    //TODO
+                }
+            }
+
+            for (int i = 0; i < nodes.Count;i++)
+            {
+                
+            }
+
+
+                return null;
         }
 
         public void drawNDFA(string regEx)

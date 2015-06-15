@@ -59,6 +59,7 @@
     <Compile Include="Form_Drawing.Designer.cs">
       <DependentUpon>Form_Drawing.cs</DependentUpon>
     </Compile>
+    <Compile Include="NDFA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
