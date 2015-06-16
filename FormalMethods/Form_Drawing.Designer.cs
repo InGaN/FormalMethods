@@ -47,19 +47,19 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(121, 12);
+            this.panel1.Location = new System.Drawing.Point(12, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1119, 449);
+            this.panel1.Size = new System.Drawing.Size(1069, 593);
             this.panel1.TabIndex = 1;
             // 
             // Form_Drawing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1339, 531);
+            this.ClientSize = new System.Drawing.Size(1089, 609);
             this.Controls.Add(this.panel1);
             this.Name = "Form_Drawing";
-            this.Text = "Form_Drawing";
+            this.Text = "NDFA";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

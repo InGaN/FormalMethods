@@ -19,27 +19,41 @@ namespace FormalMethods
         {
             InitializeComponent();
         }
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            changeCheckboxes1();
+        }
 
         private List<NodeArrow> parseRegularExpression(string regex)
         {
-            RegExSection currentSection = new RegExSection(""); // a section is part of the regex between ( and )
+            List<RegExSection> sections = new List<RegExSection>(); // a section is part of the regex between ( and )     
+            List<NodeArrow> arrows = new List<NodeArrow>(); // arrows between 2 nodes
+
             bool fillSection = false;
+
+            RegExSection currentSection = new RegExSection(""); 
             for (int i = 0; i < regex.Length; i++)
             {
-                if (regex[i] == ')') { fillSection = false; }
+                if (regex[i] == ')') { 
+                    fillSection = false;
+                    if (currentSection.Length != 0) { 
+                        sections.Add(currentSection);
+                        currentSection = new RegExSection("");
+                    }
+                }
                 if (fillSection) {
                     currentSection.add(regex[i]);
                 }
                 if (regex[i] == '(') { fillSection = true; }                
             }
 
-
-            List<NodeArrow> arrows = new List<NodeArrow>();
-
-            List<NodeArrow> arrowsPipe = parseRegexPipes(currentSection.getSection());
-            for (int i = 0; i < arrowsPipe.Count; i++)
+            for (int i = 0; i < sections.Count; i++) 
             {
-                arrows.Add(arrowsPipe[i]);
+                List<NodeArrow> arrowsPipe = parseRegexPipes(sections[i].getSection());
+                for (int x = 0; x < arrowsPipe.Count; x++)
+                {
+                    arrows.Add(arrowsPipe[x]);
+                }
             }
 
             //for (int i = 0; i < currentSection.Length; i++)
@@ -67,7 +81,7 @@ namespace FormalMethods
                 {
                     lastNode += (sections[i].Length-1);                    
                     nodeCounter++;
-                    arrows.Add(new NodeArrow(nodes[currentNode], nodes[nodeCounter], "ε"));
+                    arrows.Add(new NodeArrow(nodes[currentNode], nodes[nodeCounter], 'ε'));
                 }
 
                 lastNode += nodeCounter;
@@ -98,7 +112,15 @@ namespace FormalMethods
                     }
                 }
                 
-            } 
+            }
+            else // no | present
+            {
+                for(int i = 0; i < input.Length; i++)
+                {
+                    arrows.Add(new NodeArrow(nodes[nodeCounter], nodes[nodeCounter + 1], input[i]));
+                    nodeCounter++;
+                }
+            }
             return arrows;
         }
 
@@ -145,14 +167,39 @@ namespace FormalMethods
         {
             Form_Drawing formDraw = new Form_Drawing();
             nodes = parseNodes(LanguageTextBox.Text);
-            formDraw.Show();
-            formDraw.drawNDFA(parseRegularExpression(regexTextBox.Text));
+            if (rb1_regex.Checked) { formDraw.drawNDFA(parseRegularExpression(regexTextBox.Text)); formDraw.Text = "Regex -> NDFA";  }
+            else if (rb1_grammar.Checked) { formDraw.Text = "Grammar -> NDFA"; }
+
+            formDraw.Show();            
         }
 
         private void regexTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter) { button2_Click(null, null); }
         }
+
+        // Checkbox behavior
+        private void rb1_regex_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
+        private void rb2_grammar_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
+        private void changeCheckboxes1()
+        {
+            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = true; }
+            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = false; }
+        }
+
+        private void btn_Grammar_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            LanguageTextBox.Text = (LanguageTextBox.Text.Length == 0) ? "S,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34" : "";
+            regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";       
+
+            //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
+            //player.Play();
+        }        
     }
 
     public class FMCollection
