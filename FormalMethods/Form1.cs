@@ -76,7 +76,8 @@ namespace FormalMethods
             //parseM(); 
             Form_Drawing formDraw = new Form_Drawing();
             formDraw.Show();
-            formDraw.drawNDFA(grammarTextBox.Text);
+            formDraw.drawNDFA(regexTextBox.Text);
+            formDraw.regExtoNDFA(regexTextBox.Text);
         }
 
         private void button2_Click(object sender, EventArgs e)
