@@ -25,25 +25,86 @@ namespace FormalMethods
 
         public string regExtoNDFA(string regEx)
         {
-            string startNDFA = "digraph{";
+            string startNDFA = "digraph{node[shape=circle];";
             string endNDFA = "}";
             List<char> nodes = new List<char>();
-            for(int i =0 ; i < regEx.Length;i++)
-            {
-                if(!exceptions.Contains(regEx[i]))
-                {
-                    nodes.Add(regEx[i]);
-                }
-                else
-                {
-                    //TODO
-                }
-            }
 
-            for (int i = 0; i < nodes.Count;i++)
+            List<List<char>> sections = new List<List<char>>();
+
+            if(!regEx.Contains("(") || !regEx.Contains(")"))
             {
-                
+                List<char> section = new List<char>();
+                for (int i = 0; i < regEx.Length; i++)
+                {
+                    section.Add(regEx[i]);
+                }
+                sections.Add(section);
             }
+            else
+            {
+                for(int i = 0 ;i < regEx.Length;i++)
+                {
+                    if(regEx[i].Equals('('))
+                    {
+                        i += 1;
+                        List<char> section = new List<char>();
+                        for(int j = i;i < regEx.Length;i++)
+                        {
+                            if (!regEx[i].Equals(')'))
+                            {
+                                section.Add(regEx[i]);
+                            }
+                            else
+                            {
+                                i -= 1;
+                                sections.Add(section);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        i += 1;
+                        List<char> section = new List<char>();
+                        for(int j = i; i < regEx.Length;i++)
+                        {
+                            if(!regEx[i].Equals('('))
+                            {
+                                section.Add(regEx[i]);
+                            }
+                            else
+                            {
+                                i -= 1;
+                                sections.Add(section);
+                                break;
+                            }
+                        }
+                        sections.Add(section);
+                    }
+                }
+            }
+            int x = sections.Count;
+            int y = 0;
+
+
+
+
+            //    for (int i = 0; i < regEx.Length; i++)
+            //    {
+            //        if (!exceptions.Contains(regEx[i]))
+            //        {
+            //            nodes.Add(regEx[i]);
+            //        }
+            //        else
+            //        {
+            //            //TODO
+            //        }
+            //    }
+
+            //for (int i = 0; i < nodes.Count;i++)
+            //{
+                
+            //}
 
 
                 return null;
