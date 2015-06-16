@@ -42,12 +42,12 @@ namespace FormalMethods
                 arrows.Add(arrowsPipe[i]);
             }
 
-                for (int i = 0; i < currentSection.Length; i++)
-                {
-                    NodeArrow arrow = new NodeArrow(nodes[nodeCounter], nodes[nodeCounter + 1], currentSection.getSection()[i].ToString());
-                    arrows.Add(arrow);
-                    nodeCounter++;
-                }
+            //for (int i = 0; i < currentSection.Length; i++)
+            //{
+            //    NodeArrow arrow = new NodeArrow(nodes[nodeCounter], nodes[nodeCounter + 1], currentSection.getSection()[i].ToString());
+            //    arrows.Add(arrow);
+            //    nodeCounter++;
+            //}
             
             Console.WriteLine(currentSection.getSection());
             nodeCounter = 0;
@@ -61,31 +61,39 @@ namespace FormalMethods
             {
                 string[] sections = input.Split('|');             
                 int lastNode = 0;
+                int currentNode = nodeCounter;
                 // first create ε arrows for each | in regex section
                 for (int i = 0; i < sections.Length; i++)
                 {
                     lastNode += (sections[i].Length-1);                    
                     nodeCounter++;
-                    arrows.Add(new NodeArrow(nodes[nodeCounter], nodes[nodeCounter], "ε"));
+                    arrows.Add(new NodeArrow(nodes[currentNode], nodes[nodeCounter], "ε"));
                 }
 
                 lastNode += nodeCounter;
                 lastNode += 1; // one additional step
                 string finalNode = nodes[nodeCounter + lastNode];
-                 
+                int nodeCounterPipes = nodeCounter - sections.Length;
+                nodeCounter++;
                 for (int i = 0; i < sections.Length; i++)
-                {                    
+                {
+                    nodeCounterPipes++;
                     Console.WriteLine(sections[i]);
                     for (int i2 = 0; i2 < sections[i].Length; i2++)
-                    {
-                        nodeCounter++;
-                        if (i2 != (sections[i].Length - 1)) 
-                        {
-                            arrows.Add(new NodeArrow(nodes[nodeCounter - (sections.Length)], nodes[nodeCounter], sections[i][i2]));
+                    {                        
+                        if (i2 == 0) // first char
+                        {                            
+                            arrows.Add(new NodeArrow(nodes[nodeCounterPipes], nodes[nodeCounter], sections[i][i2]));
                         }
-                        else // final char
+                        else if (i2 == (sections[i].Length - 1)) // final char
                         {
-                            arrows.Add(new NodeArrow(nodes[nodeCounter - (sections.Length)], nodes[lastNode], sections[i][i2]));
+                            arrows.Add(new NodeArrow(nodes[nodeCounter], nodes[lastNode], sections[i][i2]));
+                            nodeCounter++;
+                        }
+                        else // all in between
+                        {
+                            arrows.Add(new NodeArrow(nodes[nodeCounter], nodes[nodeCounter + 1], sections[i][i2]));
+                            nodeCounter++;
                         }
                     }
                 }
