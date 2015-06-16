@@ -59,6 +59,12 @@
     <Compile Include="Form_Drawing.Designer.cs">
       <DependentUpon>Form_Drawing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Grammar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Grammar.Designer.cs">
+      <DependentUpon>Form_Grammar.cs</DependentUpon>
+    </Compile>
     <Compile Include="NDFA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +73,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Drawing.resx">
       <DependentUpon>Form_Drawing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Grammar.resx">
+      <DependentUpon>Form_Grammar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -24,6 +24,57 @@ namespace FormalMethods
             changeCheckboxes1();
         }
 
+        private void btn_NDFA1_Click(object sender, EventArgs e)
+        {
+            Form_Drawing formDraw = new Form_Drawing();
+            formDraw.Show();
+            formDraw.drawNDFA(regexTextBox.Text);
+            //formDraw.regExtoNDFA(regexTextBox.Text);
+        }
+
+        private void btn_NDFA2_Click(object sender, EventArgs e)
+        {
+            Form_Drawing formDraw = new Form_Drawing();
+            nodes = parseNodes(LanguageTextBox.Text);
+            if (rb1_regex.Checked) { formDraw.drawRegexToNDFA(parseRegularExpression(regexTextBox.Text)); formDraw.Text = "Regex -> NDFA"; }
+            else if (rb1_grammar.Checked) { formDraw.drawRegexToNDFA(parseGrammar(grammarTextBox.Text)); formDraw.Text = "Grammar -> NDFA"; }
+
+            formDraw.Show();
+        }
+
+        private void regexTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { btn_NDFA2_Click(null, null); }
+        }
+
+        private void btn_Grammar_Click(object sender, EventArgs e)
+        {
+            Form_Grammar formGrammar = new Form_Grammar();
+            formGrammar.Text = "Regex -> Grammar";
+            formGrammar.Show();
+        }
+
+        // Checkbox behavior
+        private void rb1_regex_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
+        private void rb2_grammar_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
+        private void changeCheckboxes1()
+        {
+            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = true; }
+            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = false; }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            LanguageTextBox.Text = (LanguageTextBox.Text.Length == 0) ? "S,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40" : "";
+            regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";
+            grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a3|a|b", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
+
+            //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
+            //player.Play();
+        }
+
+        //  #################################          PARSE BEHAVIOR          #################################
+
         private List<NodeArrow> parseRegularExpression(string regex)
         {
             List<RegExSection> sections = new List<RegExSection>(); // a section is part of the regex between ( and )     
@@ -129,111 +180,39 @@ namespace FormalMethods
             return (input.Trim()).Split(',');
         }
 
-        private void parseM()
+        private List<NodeArrow> parseGrammar(string input)
         {
-            string[] separators = {">", "\r\n"};
-            string[] input = ((grammarTextBox.Text).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            List<NodeArrow> arrows = new List<NodeArrow>(); // arrows between 2 nodes
+            string[] separators = { ">", "\r\n" };
+            string[] grammar = ((input).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-            FMCollection[] fmArray = new FMCollection[input.Length / 2];
-            for (int idx = 0; idx < input.Length; idx++) {
-                if(idx%2==0)
-                    fmArray[idx/2] = new FMCollection(input[idx]);
-                else {
-                    string[] steps = (input[idx]).Split('|');                    
-                    (fmArray[idx/2]).addSteps(steps);
-                }                    
+            FMCollection[] fmArray = new FMCollection[grammar.Length / 2];
+            for (int i = 0; i < grammar.Length; i++)
+            {
+                if (i % 2 == 0)
+                    fmArray[i / 2] = new FMCollection(grammar[i]);
+                else
+                {
+                    string[] steps = (grammar[i]).Split('|');
+                    (fmArray[i / 2]).addSteps(steps);
+                }
             }
-
-            Console.WriteLine("=== printing steps ===");
-            for (int idx = 0; idx < fmArray.Length; idx++) {
-                Console.WriteLine(fmArray[idx].ToString());
+            for (int i = 0; i < fmArray.Length; i++)
+            {
+                for (int i2 = 0; i2 < fmArray[i].getSteps().Length; i2++)
+                {
+                    if ((fmArray[i].getSteps()[i2]).Length == 1) // no following step, final Node
+                    {
+                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0], true));
+                    }
+                    else
+                    {
+                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0]));
+                    }
+                }                
             }
-
-            Form_Drawing formDraw = new Form_Drawing();
-            formDraw.Show();
-            formDraw.drawDFA(fmArray);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //parseM(); 
-            Form_Drawing formDraw = new Form_Drawing();
-            formDraw.Show();
-            formDraw.drawNDFA(regexTextBox.Text);
-            //formDraw.regExtoNDFA(regexTextBox.Text);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Form_Drawing formDraw = new Form_Drawing();
-            nodes = parseNodes(LanguageTextBox.Text);
-            if (rb1_regex.Checked) { formDraw.drawNDFA(parseRegularExpression(regexTextBox.Text)); formDraw.Text = "Regex -> NDFA";  }
-            else if (rb1_grammar.Checked) { formDraw.Text = "Grammar -> NDFA"; }
-
-            formDraw.Show();            
-        }
-
-        private void regexTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter) { button2_Click(null, null); }
-        }
-
-        // Checkbox behavior
-        private void rb1_regex_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
-        private void rb2_grammar_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
-        private void changeCheckboxes1()
-        {
-            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = true; }
-            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = false; }
-        }
-
-        private void btn_Grammar_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            LanguageTextBox.Text = (LanguageTextBox.Text.Length == 0) ? "S,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34" : "";
-            regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";       
-
-            //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
-            //player.Play();
-        }        
-    }
-
-    public class FMCollection
-    {
-        private string startCharacter;
-        private string[] steps;
-
-        public FMCollection(string character)
-        {
-            startCharacter = character;
-        }
-        public FMCollection(string character, string[] input)
-        {
-            startCharacter = character;
-            steps = input;
-        }
-        public void addSteps(string[] input)
-        {
-            steps = input;
-        }
-        public override string ToString()
-        {
-            string output = "(" + startCharacter + ">";
-            for (int idx = 0; idx < steps.Length; idx++) {
-                output += steps[idx];
-                if (idx < steps.Length - 1)
-                    output += "|";
-            }
-            output += ")";
-            return output;
-        }
-
-        public string getStartCharacter() { return startCharacter; }
-        public string[] getSteps() { return steps; }
+            return arrows;
+        }                       
     }
 
     public class RegExSection
@@ -268,8 +247,9 @@ namespace FormalMethods
     public class NodeArrow
     {
         private string fromNode;
-        private string toNode;
+        private string toNode;        
         private string label;
+        private bool endNode = false;
 
         public NodeArrow(string from, string to, string label)
         {
@@ -281,16 +261,67 @@ namespace FormalMethods
         {
             fromNode = from;
             toNode = to;
+            this.label = label.ToString();            
+        }
+        public NodeArrow(string from, string to, string label, bool endNode)
+        {
+            fromNode = from;
+            toNode = to;
+            this.label = label;
+            this.endNode = endNode;
+        }
+        public NodeArrow(string from, string to, char label, bool endNode)
+        {
+            fromNode = from;
+            toNode = to;
             this.label = label.ToString();
+            this.endNode = endNode;
         }
 
         public override string ToString()
         {
-            return fromNode + " -> " + toNode + " [label = " + label + "];";
+            string final = (this.endNode) ? fromNode + "[shape=doublecircle]" : "";
+            return fromNode + " -> " + toNode + " [label = " + label + "];" + final;
         }
 
         public string getFromNode() { return fromNode; }
         public string getToNode() { return toNode; }
         public string getLabel() { return label; }
+        public bool getEndNode() { return endNode; }
+    }
+
+    public class FMCollection
+    {
+        private string startCharacter;
+        private string[] steps;
+
+        public FMCollection(string character)
+        {
+            startCharacter = character;
+        }
+        public FMCollection(string character, string[] input)
+        {
+            startCharacter = character;
+            steps = input;
+        }
+        public void addSteps(string[] input)
+        {
+            steps = input;
+        }
+        public override string ToString()
+        {
+            string output = "(" + startCharacter + ">";
+            for (int idx = 0; idx < steps.Length; idx++)
+            {
+                output += steps[idx];
+                if (idx < steps.Length - 1)
+                    output += "|";
+            }
+            output += ")";
+            return output;
+        }
+
+        public string getStartCharacter() { return startCharacter; }
+        public string[] getSteps() { return steps; }
     }
 }

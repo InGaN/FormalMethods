@@ -363,7 +363,7 @@ namespace FormalMethods
             return output;
         }
 
-        public void drawNDFA(List<NodeArrow> arrows)
+        public void drawRegexToNDFA(List<NodeArrow> arrows)
         {
             var getStartProcessQuery = new GetStartProcessQuery();
             var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
@@ -381,6 +381,11 @@ namespace FormalMethods
             byte[] output = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Png);           
             MemoryStream ms = new MemoryStream(output);
             pictureBox1.Image = Image.FromStream(ms);
+        }
+
+        public void drawGrammarToNDFA(List<NodeArrow> arrows)
+        {
+
         }
 
         public void drawDFA(FMCollection[] collection)

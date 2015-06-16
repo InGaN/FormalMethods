@@ -60,7 +60,7 @@
             this.btn_NDFA1.TabIndex = 2;
             this.btn_NDFA1.Text = "Draw NDFA (1)";
             this.btn_NDFA1.UseVisualStyleBackColor = true;
-            this.btn_NDFA1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_NDFA1.Click += new System.EventHandler(this.btn_NDFA1_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -183,7 +183,7 @@
             this.btn_NDFA2.TabIndex = 7;
             this.btn_NDFA2.Text = "Draw NDFA (2)";
             this.btn_NDFA2.UseVisualStyleBackColor = true;
-            this.btn_NDFA2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_NDFA2.Click += new System.EventHandler(this.btn_NDFA2_Click);
             // 
             // btn_Grammar
             // 
