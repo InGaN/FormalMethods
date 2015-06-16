@@ -17,7 +17,21 @@ namespace FormalMethods
             InitializeComponent();
         }
 
-        
+        private void parseRegularExpression(string regex)
+        {
+            RegExSection currentSection = new RegExSection("");
+            bool fillSection = false;
+            for (int i = 0; i < regex.Length; i++)
+            {
+                if (regex[i] == ')') { fillSection = false; }
+                if (fillSection) {
+                    currentSection.add(regex[i]);
+                }
+                if (regex[i] == '(') { fillSection = true; }                
+            }
+
+            Console.WriteLine(currentSection.getSection());
+        }
 
         private void parseM()
         {
@@ -50,11 +64,7 @@ namespace FormalMethods
             Form_Drawing formDraw = new Form_Drawing();
             formDraw.Show();
             formDraw.drawNDFA(grammarTextBox.Text);
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            parseRegularExpression(regexTextBox.Text);
         }
     }
 
@@ -76,7 +86,7 @@ namespace FormalMethods
         {
             steps = input;
         }
-        public string ToString()
+        public override string ToString()
         {
             string output = "(" + startCharacter + ">";
             for (int idx = 0; idx < steps.Length; idx++) {
@@ -90,7 +100,48 @@ namespace FormalMethods
 
         public string getStartCharacter() { return startCharacter; }
         public string[] getSteps() { return steps; }
-
     }
 
+    public class RegExSection
+    {
+        private string section;
+        private System.Text.StringBuilder sb;
+
+        public RegExSection(string section)
+        {
+            this.section = section;
+            sb = new System.Text.StringBuilder(section);
+        }
+
+        public void add(string addition)
+        {
+            sb.Append(addition);
+            this.section = sb.ToString();
+        }
+        public void add(char addition)
+        {
+            sb.Append(addition);
+            this.section = sb.ToString();
+        }
+
+        public string getSection() { return section; }
+    }
+
+    public class NodeArrow
+    {
+        private string fromNode;
+        private string toNode;
+        private string label;
+
+        public NodeArrow(string from, string to, string label)
+        {
+            fromNode = from;
+            toNode = to;
+            this.label = label;
+        }
+
+        public string getFromNode() { return fromNode; }
+        public string getToNode() { return toNode; }
+        public string getLabel() { return label; }
+    }
 }

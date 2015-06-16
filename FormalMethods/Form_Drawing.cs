@@ -51,9 +51,6 @@ namespace FormalMethods
 
         public void drawNDFA(string regEx)
         {
-
-
-
             var getStartProcessQuery = new GetStartProcessQuery();
             var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
             var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
@@ -66,7 +63,7 @@ namespace FormalMethods
 
             byte[] output = wrapper.GenerateGraph("digraph{a -> b [ label = a];b->a; b -> c; c -> a; a[shape=circle,peripheries=2]; x->a; x[shape=none];}", Enums.GraphReturnType.Png);
             byte[] output2 = wrapper.GenerateGraph("digraph{" + stringAnalyzer(regEx) + "}",Enums.GraphReturnType.Png);
-            MemoryStream ms = new MemoryStream(output2);
+            MemoryStream ms = new MemoryStream(output);
             pictureBox1.Image = Image.FromStream(ms);
         }
 
@@ -79,8 +76,6 @@ namespace FormalMethods
 
         public void drawDFA(FMCollection[] collection)
         {
-
-
             var getStartProcessQuery = new GetStartProcessQuery();
             var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
             var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
