@@ -12,6 +12,9 @@ namespace FormalMethods
 {
     public partial class Form1 : Form
     {
+        private string[] nodes;
+        private int nodeCounter = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -19,7 +22,7 @@ namespace FormalMethods
 
         private List<NodeArrow> parseRegularExpression(string regex)
         {
-            RegExSection currentSection = new RegExSection("");
+            RegExSection currentSection = new RegExSection(""); // a section is part of the regex between ( and )
             bool fillSection = false;
             for (int i = 0; i < regex.Length; i++)
             {
@@ -30,20 +33,70 @@ namespace FormalMethods
                 if (regex[i] == '(') { fillSection = true; }                
             }
 
-            int currentNode = 0;
-            int nextNode = 1;
+
             List<NodeArrow> arrows = new List<NodeArrow>();
 
-            for (int i = 0; i < currentSection.Length; i++)
+            List<NodeArrow> arrowsPipe = parseRegexPipes(currentSection.getSection());
+            for (int i = 0; i < arrowsPipe.Count; i++)
             {
-                NodeArrow arrow = new NodeArrow(currentNode.ToString(), nextNode.ToString(), currentSection.getSection()[i].ToString());
-                arrows.Add(arrow);
-                currentNode++;
-                nextNode++;
+                arrows.Add(arrowsPipe[i]);
             }
+
+                for (int i = 0; i < currentSection.Length; i++)
+                {
+                    NodeArrow arrow = new NodeArrow(nodes[nodeCounter], nodes[nodeCounter + 1], currentSection.getSection()[i].ToString());
+                    arrows.Add(arrow);
+                    nodeCounter++;
+                }
             
             Console.WriteLine(currentSection.getSection());
+            nodeCounter = 0;
             return arrows;
+        }
+
+        private List<NodeArrow> parseRegexPipes(string input)
+        {
+            List<NodeArrow> arrows = new List<NodeArrow>();
+            if (input.Contains('|'))
+            {
+                string[] sections = input.Split('|');             
+                int lastNode = 0;
+                // first create ε arrows for each | in regex section
+                for (int i = 0; i < sections.Length; i++)
+                {
+                    lastNode += (sections[i].Length-1);                    
+                    nodeCounter++;
+                    arrows.Add(new NodeArrow(nodes[nodeCounter], nodes[nodeCounter], "ε"));
+                }
+
+                lastNode += nodeCounter;
+                lastNode += 1; // one additional step
+                string finalNode = nodes[nodeCounter + lastNode];
+                 
+                for (int i = 0; i < sections.Length; i++)
+                {                    
+                    Console.WriteLine(sections[i]);
+                    for (int i2 = 0; i2 < sections[i].Length; i2++)
+                    {
+                        nodeCounter++;
+                        if (i2 != (sections[i].Length - 1)) 
+                        {
+                            arrows.Add(new NodeArrow(nodes[nodeCounter - (sections.Length)], nodes[nodeCounter], sections[i][i2]));
+                        }
+                        else // final char
+                        {
+                            arrows.Add(new NodeArrow(nodes[nodeCounter - (sections.Length)], nodes[lastNode], sections[i][i2]));
+                        }
+                    }
+                }
+                
+            } 
+            return arrows;
+        }
+
+        private string[] parseNodes(string input)
+        {
+            return (input.Trim()).Split(',');
         }
 
         private void parseM()
@@ -83,8 +136,14 @@ namespace FormalMethods
         private void button2_Click(object sender, EventArgs e)
         {
             Form_Drawing formDraw = new Form_Drawing();
+            nodes = parseNodes(LanguageTextBox.Text);
             formDraw.Show();
             formDraw.drawNDFA(parseRegularExpression(regexTextBox.Text));
+        }
+
+        private void regexTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { button2_Click(null, null); }
         }
     }
 
@@ -162,6 +221,12 @@ namespace FormalMethods
             fromNode = from;
             toNode = to;
             this.label = label;
+        }
+        public NodeArrow(string from, string to, char label)
+        {
+            fromNode = from;
+            toNode = to;
+            this.label = label.ToString();
         }
 
         public override string ToString()

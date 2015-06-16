@@ -32,7 +32,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.grammarTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.LanguageTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.regexTextBox = new System.Windows.Forms.TextBox();
@@ -58,7 +58,7 @@
             this.tableLayoutPanel1.Controls.Add(this.button1, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.grammarTextBox, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.LanguageTextBox, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.regexTextBox, 1, 1);
@@ -88,16 +88,17 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 13);
+            this.label1.Size = new System.Drawing.Size(201, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Enter Grammar characters:";
+            this.label1.Text = "Enter Language Nodes:        ex:  S,q1,q2";
             // 
-            // textBox2
+            // LanguageTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(3, 24);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(199, 20);
-            this.textBox2.TabIndex = 0;
+            this.LanguageTextBox.Location = new System.Drawing.Point(3, 24);
+            this.LanguageTextBox.Name = "LanguageTextBox";
+            this.LanguageTextBox.Size = new System.Drawing.Size(199, 20);
+            this.LanguageTextBox.TabIndex = 0;
+            this.LanguageTextBox.Text = "S,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24";
             // 
             // label2
             // 
@@ -123,6 +124,7 @@
             this.regexTextBox.Name = "regexTextBox";
             this.regexTextBox.Size = new System.Drawing.Size(344, 20);
             this.regexTextBox.TabIndex = 6;
+            this.regexTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.regexTextBox_KeyDown);
             // 
             // button2
             // 
@@ -154,7 +156,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox grammarTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox LanguageTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox regexTextBox;
