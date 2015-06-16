@@ -17,6 +17,8 @@ namespace FormalMethods
     public partial class Form_Drawing : Form
     {
         List<char> exceptions = new List<char> { '(', ')', '+', '|', '*' };
+        int counter = 0;
+        int endCounter = 1;
 
         public Form_Drawing()
         {
@@ -28,20 +30,8 @@ namespace FormalMethods
             string startNDFA = "digraph{node[shape=circle];";
             string endNDFA = "}";
             List<char> nodes = new List<char>();
-
             List<List<char>> sections = new List<List<char>>();
 
-            if(!regEx.Contains("(") || !regEx.Contains(")"))
-            {
-                List<char> section = new List<char>();
-                for (int i = 0; i < regEx.Length; i++)
-                {
-                    section.Add(regEx[i]);
-                }
-                sections.Add(section);
-            }
-            else
-            {
                 for(int i = 0 ;i < regEx.Length;i++)
                 {
                     if(regEx[i].Equals('('))
@@ -56,15 +46,14 @@ namespace FormalMethods
                             }
                             else
                             {
-                                i -= 1;
+                                //i -= 1;
                                 sections.Add(section);
                                 break;
                             }
                         }
                     }
-                    else
+                    if(!exceptions.Contains(regEx[i]))
                     {
-                        i += 1;
                         List<char> section = new List<char>();
                         for(int j = i; i < regEx.Length;i++)
                         {
@@ -79,35 +68,274 @@ namespace FormalMethods
                                 break;
                             }
                         }
+                        if (i == regEx.Length)
+                        {
+                            sections.Add(section);
+                            break;
+                        }
+                    }
+                    if(regEx[i].Equals('+'))
+                    {
+                        List<char> section = new List<char> { '+' };
+                        sections.Add(section);
+                    }
+                    if(regEx[i].Equals('*'))
+                    {
+                        List<char> section = new List<char> { '*' };
+                        sections.Add(section);
+                    }
+                    if(regEx[i].Equals('|'))
+                    {
+                        List<char> section = new List<char> { '|' };
                         sections.Add(section);
                     }
                 }
+
+            for (int i = 0; i < sections.Count;i++)
+            {
+                if (sections[i][0].Equals('+') && canWrite(i,sections))
+                {
+                    startNDFA += addPlusBrackets(sections, i);
+                }
+                if(sections[i][0].Equals('*') && canWrite(i,sections))
+                {
+                    startNDFA += addMulitplyBrackets(sections, i);
+                }
+                if(sections[i][0].Equals('|'))
+                {
+                    startNDFA += addOther(sections, i);
+                }
+                if (!exceptions.Contains(sections[i][0]) && canWrite(i, sections) )
+                {
+                    startNDFA += addString(sections[i]);
+                }
+
             }
-            int x = sections.Count;
-            int y = 0;
+
+
+            endCounter -= 1;
+            startNDFA += endCounter + "[shape=doublecircle]";
+            startNDFA += endNDFA;
 
 
 
+                return startNDFA;
+        }
 
-            //    for (int i = 0; i < regEx.Length; i++)
-            //    {
-            //        if (!exceptions.Contains(regEx[i]))
-            //        {
-            //            nodes.Add(regEx[i]);
-            //        }
-            //        else
-            //        {
-            //            //TODO
-            //        }
-            //    }
+        public bool canWrite(int counter2,List<List<char>> sections)
+        {
+            if (counter2 - 1 != -1 && counter2 -2 != -1 && counter2 != -2)
+            {
+                if (!sections[counter2-1][0].Equals('|') && !sections[counter2-2][0].Equals('|'))
+                {
+                    if (counter2 + 1 != sections.Count)
+                    {
+                        if (!exceptions.Contains(sections[counter2 + 1][0]))
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (counter2 + 1 != sections.Count)
+                {
+                    if (!exceptions.Contains(sections[counter2 + 1][0]))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-            //for (int i = 0; i < nodes.Count;i++)
+        public string addString(List<char> section)
+        {
+            string NDFA = "";
+            string secString = new string(section.ToArray());
+            if (secString.Contains('|'))
+            {
+                string firstPart = secString.Substring(0, secString.IndexOf('|'));
+                string secondPart = secString.Substring(secString.IndexOf('|') + 1);
+                int starter1 = counter;
+                NDFA += counter + "->" + endCounter + "[label = e];";
+                counter++;
+                endCounter++;
+                NDFA += addString(firstPart.ToList());
+                int starter2 = counter;
+
+                NDFA += starter1 + "->" + endCounter + "[label = e];";
+                counter++;
+                endCounter++;
+                NDFA += addString(secondPart.ToList());
+
+                NDFA += starter2 + "->" + endCounter + "[label = e];";
+                NDFA += counter + "->" + endCounter + "[label = e];";
+                counter++;
+                endCounter++;
+
+
+            }
+            else
+            {
+                for (int j = 0; j < section.Count; j++)
+                {
+                    if (j + 1 != section.Count)
+                    {
+                        if (section[j + 1].Equals('*'))
+                        {
+                            int starter1 = counter;
+                            int starter2 = endCounter;
+                            NDFA += counter + "->" + endCounter + "[label = e];";
+                            counter++;
+                            endCounter++;
+                            NDFA += counter + "->" + endCounter + "[label = " + section[j] + "];";
+                            counter++;
+                            endCounter++;
+
+                            NDFA += counter + "->" + endCounter + "[label = e];";
+                            NDFA += counter + "->" + starter2 + "[label = e];";
+                            NDFA += starter1 + "->" + endCounter + "[label = e];";
+                            counter++;
+                            endCounter++;
+                        }
+                        if(section[j+1].Equals('+'))
+                        {
+                            int starter = endCounter;
+                            NDFA += counter + "->" + endCounter + "[label = e];";
+                            counter++;
+                            endCounter++;
+                            NDFA += counter + "->" + endCounter + "[label = " + section[j] + "];";
+                            counter++;
+                            endCounter++;
+                            NDFA += counter + "->" + endCounter + "[label = e];";
+                            NDFA += counter + "->" + starter + "[label = e];";
+                            counter++;
+                            endCounter++;
+                        }
+                        if(!section[j+1].Equals('+') && !section[j+1].Equals('*') && !section[j].Equals('+') && !section[j].Equals('*'))
+                        {
+                            NDFA += counter + "->" + endCounter + "[label = " + section[j] + "];";
+                            counter++;
+                            endCounter++;
+                        }
+                    }
+                    else
+                    {
+                        if (!section[j].Equals('+') && !section[j].Equals('*'))
+                        {
+                            NDFA += counter + "->" + endCounter + "[label = " + section[j] + "];";
+                            counter++;
+                            endCounter++;
+                        }
+                    }
+
+
+                    //NDFA += counter + "->" + endCounter + "[label = " + section[j] + "];";
+                    //counter++;
+                    //endCounter++;
+                }
+            }
+            return NDFA;
+        }
+
+        public string addOther(List<List<char>> sections,int counter2)
+        {
+            string NDFA = "";
+            int starter1 = counter;
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            if(sections[counter2-1][0].Equals('+'))
+            {
+                NDFA += addPlusBrackets(sections, counter2 - 1);
+            }
+            if(sections[counter2-1][0].Equals('*'))
+            {
+                NDFA += addMulitplyBrackets(sections, counter2 - 1);
+            }
+            if(!sections[counter2-1][0].Equals('+') && !sections[counter2-1][0].Equals('*'))
+            {
+                NDFA += addString(sections[counter2 - 1]);
+            }
+            //int starter2 = endCounter + sections[counter2 + 1].Count + 1;
+            int starter2 = counter;
+            //NDFA += counter + "->" + starter2 + "[label = e];";
+            NDFA += starter1 + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            if (counter2 + 2 != sections.Count)
+            {
+                if (sections[counter2 + 2][0].Equals('+'))
+                {
+                    NDFA += addPlusBrackets(sections, counter2 + 2);
+                }
+                if (sections[counter2 + 2][0].Equals('*'))
+                {
+                    NDFA += addMulitplyBrackets(sections, counter2 + 2);
+                }
+                if (!sections[counter2 + 2][0].Equals('+') && !sections[counter2 + 2][0].Equals('*'))
+                {
+                    NDFA += addString(sections[counter2 + 1]);
+                }
+            }
+            else
+            {
+                NDFA += addString(sections[counter2 + 1]);
+            }
+            NDFA += starter2 + "->" + endCounter + "[label = e];";
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            return NDFA;
+        }
+
+        public string addPlusBrackets(List<List<char>> sections,int counter2)
+        {
+            string NDFA = "";
+            int starter = endCounter;
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            NDFA += addString(sections[counter2 - 1]);
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            NDFA += counter + "->" + starter + "[label = e];";
+            counter++;
+            endCounter++;
+            return NDFA;
+        }
+
+        public string addMulitplyBrackets(List<List<char>> sections,int counter2)
+        {
+            int starter1 = counter;
+            int starter2 = endCounter;
+            string NDFA = "";
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            //for (int j = 0; j < sections[i - 1].Count; j++)
             //{
-                
+            //    NDFA += counter + "->" + endCounter + "[label = " + sections[i - 1][j] + "];";
+            //    counter++;
+            //    endCounter++;
             //}
+            NDFA+= addString(sections[counter2-1]);
 
-
-                return null;
+            NDFA += counter + "->" + endCounter + "[label = e];";
+            NDFA += counter + "->" + starter2 + "[label = e];";
+            NDFA += starter1 + "->" + endCounter + "[label = e];";
+            counter++;
+            endCounter++;
+            return NDFA;
         }
 
         public void drawNDFA(string regEx)
@@ -122,8 +350,8 @@ namespace FormalMethods
                                               getProcessStartInfoQuery,
                                               registerLayoutPluginCommand);
 
-            byte[] output = wrapper.GenerateGraph("digraph{a -> b [ label = a];b->a; b -> c; c -> a; a[shape=circle,peripheries=2]; x->a; x[shape=none];}", Enums.GraphReturnType.Png);
-            byte[] output2 = wrapper.GenerateGraph("digraph{" + stringAnalyzer(regEx) + "}",Enums.GraphReturnType.Png);
+            byte[] output = wrapper.GenerateGraph(regExtoNDFA(regEx), Enums.GraphReturnType.Png);
+            //byte[] output2 = wrapper.GenerateGraph("digraph{" + stringAnalyzer(regEx) + "}",Enums.GraphReturnType.Png);
             MemoryStream ms = new MemoryStream(output);
             pictureBox1.Image = Image.FromStream(ms);
         }
