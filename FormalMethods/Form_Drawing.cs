@@ -74,6 +74,26 @@ namespace FormalMethods
             return output;
         }
 
+        public void drawNDFA(List<NodeArrow> arrows)
+        {
+            var getStartProcessQuery = new GetStartProcessQuery();
+            var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+            var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+
+            var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
+
+            StringBuilder sb = new StringBuilder("digraph{");
+            for (int i = 0; i < arrows.Count; i++)
+            {
+                sb.Append(arrows[i].ToString());
+            }
+            sb.Append("}");
+
+            byte[] output = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Png);           
+            MemoryStream ms = new MemoryStream(output);
+            pictureBox1.Image = Image.FromStream(ms);
+        }
+
         public void drawDFA(FMCollection[] collection)
         {
             var getStartProcessQuery = new GetStartProcessQuery();

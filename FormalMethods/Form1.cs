@@ -17,7 +17,7 @@ namespace FormalMethods
             InitializeComponent();
         }
 
-        private void parseRegularExpression(string regex)
+        private List<NodeArrow> parseRegularExpression(string regex)
         {
             RegExSection currentSection = new RegExSection("");
             bool fillSection = false;
@@ -30,7 +30,20 @@ namespace FormalMethods
                 if (regex[i] == '(') { fillSection = true; }                
             }
 
+            int currentNode = 0;
+            int nextNode = 1;
+            List<NodeArrow> arrows = new List<NodeArrow>();
+
+            for (int i = 0; i < currentSection.Length; i++)
+            {
+                NodeArrow arrow = new NodeArrow(currentNode.ToString(), nextNode.ToString(), currentSection.getSection()[i].ToString());
+                arrows.Add(arrow);
+                currentNode++;
+                nextNode++;
+            }
+            
             Console.WriteLine(currentSection.getSection());
+            return arrows;
         }
 
         private void parseM()
@@ -64,7 +77,13 @@ namespace FormalMethods
             Form_Drawing formDraw = new Form_Drawing();
             formDraw.Show();
             formDraw.drawNDFA(grammarTextBox.Text);
-            parseRegularExpression(regexTextBox.Text);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form_Drawing formDraw = new Form_Drawing();
+            formDraw.Show();
+            formDraw.drawNDFA(parseRegularExpression(regexTextBox.Text));
         }
     }
 
@@ -106,22 +125,26 @@ namespace FormalMethods
     {
         private string section;
         private System.Text.StringBuilder sb;
+        public int Length;
 
         public RegExSection(string section)
         {
             this.section = section;
             sb = new System.Text.StringBuilder(section);
+            this.Length = section.Length;
         }
 
         public void add(string addition)
         {
             sb.Append(addition);
             this.section = sb.ToString();
+            this.Length += addition.Length;
         }
         public void add(char addition)
         {
             sb.Append(addition);
             this.section = sb.ToString();
+            this.Length++;
         }
 
         public string getSection() { return section; }
@@ -138,6 +161,11 @@ namespace FormalMethods
             fromNode = from;
             toNode = to;
             this.label = label;
+        }
+
+        public override string ToString()
+        {
+            return fromNode + " -> " + toNode + " [label = " + label + "];";
         }
 
         public string getFromNode() { return fromNode; }
