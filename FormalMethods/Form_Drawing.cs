@@ -372,6 +372,7 @@ namespace FormalMethods
             var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
 
             StringBuilder sb = new StringBuilder("digraph{node [shape=circle]; rankdir=LR;");
+            sb.Append("x->" + arrows[0].getFromNode() + "; x[shape=point]");
             for (int i = 0; i < arrows.Count; i++)
             {
                 sb.Append(arrows[i].ToString());

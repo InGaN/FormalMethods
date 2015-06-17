@@ -35,7 +35,7 @@ namespace FormalMethods
         private void btn_NDFA2_Click(object sender, EventArgs e)
         {
             Form_Drawing formDraw = new Form_Drawing();
-            nodes = parseNodes(LanguageTextBox.Text);
+            nodes = parseNodes(nodesTextBox.Text);
             if (rb1_regex.Checked) { formDraw.drawRegexToNDFA(parseRegularExpression(regexTextBox.Text)); formDraw.Text = "Regex -> NDFA"; }
             else if (rb1_grammar.Checked) { formDraw.drawRegexToNDFA(parseGrammar(grammarTextBox.Text)); formDraw.Text = "Grammar -> NDFA"; }
 
@@ -59,15 +59,15 @@ namespace FormalMethods
         private void rb2_grammar_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
         private void changeCheckboxes1()
         {
-            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = true; }
-            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = false; }
+            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = btn_NDFA1.Enabled = true; }
+            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = btn_NDFA1.Enabled = false; }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            LanguageTextBox.Text = (LanguageTextBox.Text.Length == 0) ? "S,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40" : "";
+            nodesTextBox.Text = (nodesTextBox.Text.Length == 0) ? "S, q1, 40" : "";
             regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";
-            grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a3|a|b", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
+            grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a4|a|b \r\n 4>a", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
 
             //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
             //player.Play();
@@ -177,7 +177,40 @@ namespace FormalMethods
 
         private string[] parseNodes(string input)
         {
-            return (input.Trim()).Split(',');
+            string[] vars = (input.Trim()).Split(',');
+            string starter = vars[0];
+            string incrementer = vars[1];
+            int sizer = 0;
+            Int32.TryParse(vars[2], out sizer);
+
+            string[] nodes = new string[sizer];
+
+            int n = 0;
+            int numPos = 0; // find the numeric value of the incrementer
+            for (int x = 0; x < incrementer.Length; x++)
+            {                
+                if (Int32.TryParse(incrementer[x].ToString(), out n))
+                {
+                    numPos = x;
+                    break;
+                }
+            }
+
+            string incStart = incrementer.Substring(0, numPos);
+            string incEnd = incrementer.Substring(numPos + 1);
+
+            for (int i = 0; i < sizer; i++) {
+                incrementer = (incStart + n + incEnd).ToString();
+                if (i == 0) {
+                    nodes[i] = starter;
+                }
+                else {
+                    nodes[i] = incrementer;
+                    n++;
+                }
+                
+            }
+            return nodes;
         }
 
         private List<NodeArrow> parseGrammar(string input)
@@ -203,7 +236,7 @@ namespace FormalMethods
                 {
                     if ((fmArray[i].getSteps()[i2]).Length == 1) // no following step, final Node
                     {
-                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0], true));
+                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), fmArray[i].getStartCharacter(), fmArray[i].getSteps()[i2][0], true));
                     }
                     else
                     {
