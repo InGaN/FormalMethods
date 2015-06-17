@@ -70,9 +70,9 @@ namespace FormalMethods
             nodesTextBox.Text = (nodesTextBox.Text.Length == 0) ? "S, q1, 40" : "";
             regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";
             grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a4|a|b \r\n 4>a", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
-            textBox_table1.Text = (textBox_table1.Text.Length == 0) ? "S\r\nq1\r\nq2\r\nq3\r\nq4" : "";
+            textBox_table1.Text = (textBox_table1.Text.Length == 0) ? "S\r\n*q1\r\nq2\r\nq3\r\n*q4" : "";
             textBox_table2.Text = (textBox_table2.Text.Length == 0) ? "q1,q3\r\nq2\r\nq3\r\nq3\r\n-" : "";
-            textBox_table3.Text = (textBox_table3.Text.Length == 0) ? "q2\r\nS\r\nS\r\nq2,q4\r\n-" : "";
+            textBox_table3.Text = (textBox_table3.Text.Length == 0) ? "q2\r\n-\r\nS\r\nq2,q4\r\n-" : "";
             //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
             //player.Play();
         }
@@ -265,10 +265,10 @@ namespace FormalMethods
                 string[] stepsA = grammar2[i].Split(',');
                 string[] stepsB = grammar3[i].Split(',');                
                 for (int x = 0; x < stepsA.Length; x++) {
-                    stepsA[x] = "a" + stepsA[x];                
+                    stepsA[x] = (stepsA[x] != "-") ? "a" + stepsA[x] : "-";                
                 }
                 for (int x = 0; x < stepsB.Length; x++) {
-                    stepsB[x] = "b" + stepsB[x];
+                    stepsB[x] = (stepsB[x] != "-") ? "b" + stepsB[x] : "-";                
                 }
 
                 int originalLength = stepsA.Length;
@@ -280,15 +280,24 @@ namespace FormalMethods
 
             for (int i = 0; i < fmArray.Length; i++)
             {
+                int ends = 0;
                 for (int i2 = 0; i2 < fmArray[i].getSteps().Length; i2++)
-                {
-                    if ((fmArray[i].getSteps()[i2]).Length == 1) // no following step, final Node
+                {                    
+                    if ((fmArray[i].getSteps()[i2]) != "-")
                     {
-                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), fmArray[i].getStartCharacter(), fmArray[i].getSteps()[i2][0], true));
+                        if (fmArray[i].getStartCharacter()[0] == '*')
+                            arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0], true));
+                        else
+                            arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0]));
+                        
                     }
                     else
                     {
-                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0]));
+                        ends++;
+                        if (ends >= 2)
+                        {
+                            arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), fmArray[i].getStartCharacter(), fmArray[i].getSteps()[i2][0], true));
+                        }
                     }
                 }                
             }
