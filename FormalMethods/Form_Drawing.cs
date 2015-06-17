@@ -365,23 +365,25 @@ namespace FormalMethods
 
         public void drawRegexToNDFA(List<NodeArrow> arrows)
         {
-            var getStartProcessQuery = new GetStartProcessQuery();
-            var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
-            var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+            if (arrows.Count > 0) {
+                var getStartProcessQuery = new GetStartProcessQuery();
+                var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+                var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
 
-            var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
+                var wrapper = new GraphGeneration(getStartProcessQuery, getProcessStartInfoQuery, registerLayoutPluginCommand);
 
-            StringBuilder sb = new StringBuilder("digraph{node [shape=circle]; rankdir=LR;");
-            sb.Append("x->" + arrows[0].getFromNode() + "; x[shape=point]");
-            for (int i = 0; i < arrows.Count; i++)
-            {
-                sb.Append(arrows[i].ToString());
-            }
-            sb.Append("}");
+                StringBuilder sb = new StringBuilder("digraph{node [shape=circle]; rankdir=LR;");
+                sb.Append("x->" + arrows[0].getFromNode() + "; x[shape=point]");
+                for (int i = 0; i < arrows.Count; i++)
+                {
+                    sb.Append(arrows[i].ToString());
+                }
+                sb.Append("}");
 
-            byte[] output = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Png);           
-            MemoryStream ms = new MemoryStream(output);
-            pictureBox1.Image = Image.FromStream(ms);
+                byte[] output = wrapper.GenerateGraph(sb.ToString(), Enums.GraphReturnType.Png);
+                MemoryStream ms = new MemoryStream(output);
+                pictureBox1.Image = Image.FromStream(ms);
+            }            
         }
 
         public void drawGrammarToNDFA(List<NodeArrow> arrows)

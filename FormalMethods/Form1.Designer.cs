@@ -38,6 +38,7 @@
             this.rb1_grammar = new System.Windows.Forms.RadioButton();
             this.rb1_regex = new System.Windows.Forms.RadioButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.rb1_NDFA = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_NDFA2 = new System.Windows.Forms.Button();
             this.btn_Grammar = new System.Windows.Forms.Button();
@@ -45,11 +46,19 @@
             this.label_grammar = new System.Windows.Forms.Label();
             this.label_nodes = new System.Windows.Forms.Label();
             this.nodesTextBox = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel_NDFA = new System.Windows.Forms.TableLayoutPanel();
+            this.table_lableTitle = new System.Windows.Forms.Label();
+            this.table_lable1 = new System.Windows.Forms.Label();
+            this.table_lable2 = new System.Windows.Forms.Label();
+            this.textBox_table1 = new System.Windows.Forms.TextBox();
+            this.textBox_table2 = new System.Windows.Forms.TextBox();
+            this.textBox_table3 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel_NDFA.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_NDFA1
@@ -75,16 +84,17 @@
             this.tableLayoutPanel1.Controls.Add(this.label_grammar, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label_nodes, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.nodesTextBox, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel_NDFA, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 181F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(555, 434);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 230F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(555, 534);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // label_regex
@@ -112,7 +122,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel2, 1, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(243, 257);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(243, 314);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -126,20 +136,23 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.rb1_grammar, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rb1_regex, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.pictureBox1, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.pictureBox1, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.rb1_NDFA, 0, 2);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(100, 94);
+            this.tableLayoutPanel4.RowCount = 4;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(100, 133);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // rb1_grammar
             // 
             this.rb1_grammar.AutoSize = true;
-            this.rb1_grammar.Location = new System.Drawing.Point(3, 26);
+            this.rb1_grammar.Location = new System.Drawing.Point(3, 28);
             this.rb1_grammar.Name = "rb1_grammar";
             this.rb1_grammar.Size = new System.Drawing.Size(67, 17);
             this.rb1_grammar.TabIndex = 1;
@@ -167,13 +180,24 @@
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.ImageLocation = "";
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(5, 49);
+            this.pictureBox1.Location = new System.Drawing.Point(5, 78);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(35, 42);
+            this.pictureBox1.Size = new System.Drawing.Size(35, 52);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // rb1_NDFA
+            // 
+            this.rb1_NDFA.AutoSize = true;
+            this.rb1_NDFA.Location = new System.Drawing.Point(3, 53);
+            this.rb1_NDFA.Name = "rb1_NDFA";
+            this.rb1_NDFA.Size = new System.Drawing.Size(54, 17);
+            this.rb1_NDFA.TabIndex = 13;
+            this.rb1_NDFA.TabStop = true;
+            this.rb1_NDFA.Text = "NDFA";
+            this.rb1_NDFA.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
             // 
@@ -213,7 +237,7 @@
             // 
             // grammarTextBox
             // 
-            this.grammarTextBox.Location = new System.Drawing.Point(243, 76);
+            this.grammarTextBox.Location = new System.Drawing.Point(243, 84);
             this.grammarTextBox.Multiline = true;
             this.grammarTextBox.Name = "grammarTextBox";
             this.grammarTextBox.Size = new System.Drawing.Size(223, 141);
@@ -223,7 +247,7 @@
             // 
             this.label_grammar.AutoSize = true;
             this.label_grammar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label_grammar.Location = new System.Drawing.Point(243, 60);
+            this.label_grammar.Location = new System.Drawing.Point(243, 68);
             this.label_grammar.Name = "label_grammar";
             this.label_grammar.Size = new System.Drawing.Size(309, 13);
             this.label_grammar.TabIndex = 4;
@@ -246,11 +270,96 @@
             this.nodesTextBox.Size = new System.Drawing.Size(201, 20);
             this.nodesTextBox.TabIndex = 11;
             // 
+            // tableLayoutPanel_NDFA
+            // 
+            this.tableLayoutPanel_NDFA.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
+            this.tableLayoutPanel_NDFA.ColumnCount = 3;
+            this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.29268F));
+            this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.70732F));
+            this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.tableLayoutPanel_NDFA.Controls.Add(this.table_lableTitle, 0, 0);
+            this.tableLayoutPanel_NDFA.Controls.Add(this.table_lable1, 1, 0);
+            this.tableLayoutPanel_NDFA.Controls.Add(this.table_lable2, 2, 0);
+            this.tableLayoutPanel_NDFA.Controls.Add(this.textBox_table1, 0, 1);
+            this.tableLayoutPanel_NDFA.Controls.Add(this.textBox_table2, 1, 1);
+            this.tableLayoutPanel_NDFA.Controls.Add(this.textBox_table3, 2, 1);
+            this.tableLayoutPanel_NDFA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_NDFA.Location = new System.Drawing.Point(3, 84);
+            this.tableLayoutPanel_NDFA.Name = "tableLayoutPanel_NDFA";
+            this.tableLayoutPanel_NDFA.RowCount = 2;
+            this.tableLayoutPanel_NDFA.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel_NDFA.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel_NDFA.Size = new System.Drawing.Size(234, 224);
+            this.tableLayoutPanel_NDFA.TabIndex = 12;
+            // 
+            // table_lableTitle
+            // 
+            this.table_lableTitle.AutoSize = true;
+            this.table_lableTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.table_lableTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.table_lableTitle.Location = new System.Drawing.Point(5, 2);
+            this.table_lableTitle.Name = "table_lableTitle";
+            this.table_lableTitle.Size = new System.Drawing.Size(58, 18);
+            this.table_lableTitle.TabIndex = 0;
+            this.table_lableTitle.Text = "NDFA";
+            // 
+            // table_lable1
+            // 
+            this.table_lable1.AutoSize = true;
+            this.table_lable1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.table_lable1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.table_lable1.Location = new System.Drawing.Point(71, 2);
+            this.table_lable1.Name = "table_lable1";
+            this.table_lable1.Size = new System.Drawing.Size(18, 18);
+            this.table_lable1.TabIndex = 1;
+            this.table_lable1.Text = "a";
+            // 
+            // table_lable2
+            // 
+            this.table_lable2.AutoSize = true;
+            this.table_lable2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.table_lable2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.table_lable2.Location = new System.Drawing.Point(157, 2);
+            this.table_lable2.Name = "table_lable2";
+            this.table_lable2.Size = new System.Drawing.Size(18, 18);
+            this.table_lable2.TabIndex = 2;
+            this.table_lable2.Text = "b";
+            // 
+            // textBox_table1
+            // 
+            this.textBox_table1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox_table1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_table1.Location = new System.Drawing.Point(5, 25);
+            this.textBox_table1.Multiline = true;
+            this.textBox_table1.Name = "textBox_table1";
+            this.textBox_table1.Size = new System.Drawing.Size(58, 194);
+            this.textBox_table1.TabIndex = 3;
+            // 
+            // textBox_table2
+            // 
+            this.textBox_table2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox_table2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_table2.Location = new System.Drawing.Point(71, 25);
+            this.textBox_table2.Multiline = true;
+            this.textBox_table2.Name = "textBox_table2";
+            this.textBox_table2.Size = new System.Drawing.Size(78, 194);
+            this.textBox_table2.TabIndex = 4;
+            // 
+            // textBox_table3
+            // 
+            this.textBox_table3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox_table3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_table3.Location = new System.Drawing.Point(157, 25);
+            this.textBox_table3.Multiline = true;
+            this.textBox_table3.Name = "textBox_table3";
+            this.textBox_table3.Size = new System.Drawing.Size(72, 194);
+            this.textBox_table3.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(555, 434);
+            this.ClientSize = new System.Drawing.Size(555, 534);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Formal Methods";
@@ -262,6 +371,8 @@
             this.tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel_NDFA.ResumeLayout(false);
+            this.tableLayoutPanel_NDFA.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -284,6 +395,14 @@
         private System.Windows.Forms.Button btn_Grammar;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox nodesTextBox;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_NDFA;
+        private System.Windows.Forms.Label table_lableTitle;
+        private System.Windows.Forms.Label table_lable1;
+        private System.Windows.Forms.Label table_lable2;
+        private System.Windows.Forms.TextBox textBox_table1;
+        private System.Windows.Forms.TextBox textBox_table2;
+        private System.Windows.Forms.TextBox textBox_table3;
+        private System.Windows.Forms.RadioButton rb1_NDFA;
     }
 }
 

@@ -38,6 +38,7 @@ namespace FormalMethods
             nodes = parseNodes(nodesTextBox.Text);
             if (rb1_regex.Checked) { formDraw.drawRegexToNDFA(parseRegularExpression(regexTextBox.Text)); formDraw.Text = "Regex -> NDFA"; }
             else if (rb1_grammar.Checked) { formDraw.drawRegexToNDFA(parseGrammar(grammarTextBox.Text)); formDraw.Text = "Grammar -> NDFA"; }
+            else if (rb1_NDFA.Checked) { formDraw.drawRegexToNDFA(parseNDFA(textBox_table1.Text, textBox_table2.Text, textBox_table3.Text)); formDraw.Text = "NDFA table -> NDFA graph"; }
 
             formDraw.Show();
         }
@@ -59,8 +60,9 @@ namespace FormalMethods
         private void rb2_grammar_CheckedChanged(object sender, EventArgs e) { changeCheckboxes1(); }
         private void changeCheckboxes1()
         {
-            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = false; btn_Grammar.Enabled = btn_NDFA1.Enabled = true; }
-            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = true; btn_Grammar.Enabled = btn_NDFA1.Enabled = false; }
+            if (rb1_regex.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = btn_Grammar.Enabled = btn_NDFA1.Enabled = btn_NDFA2.Enabled = true; grammarTextBox.Enabled = label_grammar.Enabled = tableLayoutPanel_NDFA.Enabled = false; }
+            else if (rb1_grammar.Checked) { regexTextBox.Enabled = label_regex.Enabled = nodesTextBox.Enabled = label_nodes.Enabled = btn_Grammar.Enabled = btn_NDFA1.Enabled = tableLayoutPanel_NDFA.Enabled = false; grammarTextBox.Enabled = label_grammar.Enabled = btn_NDFA2.Enabled = true; }
+            else if (rb1_NDFA.Checked) { btn_NDFA1.Enabled = label_nodes.Enabled = label_regex.Enabled = label_grammar.Enabled = regexTextBox.Enabled = grammarTextBox.Enabled = nodesTextBox.Enabled = false; tableLayoutPanel_NDFA.Enabled = btn_Grammar.Enabled = btn_NDFA2.Enabled = true; }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -68,7 +70,9 @@ namespace FormalMethods
             nodesTextBox.Text = (nodesTextBox.Text.Length == 0) ? "S, q1, 40" : "";
             regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";
             grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a4|a|b \r\n 4>a", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
-
+            textBox_table1.Text = (textBox_table1.Text.Length == 0) ? "S\r\nq1\r\nq2\r\nq3\r\nq4" : "";
+            textBox_table2.Text = (textBox_table2.Text.Length == 0) ? "q1,q3\r\nq2\r\nq3\r\nq3\r\n-" : "";
+            textBox_table3.Text = (textBox_table3.Text.Length == 0) ? "q2\r\nS\r\nS\r\nq2,q4\r\n-" : "";
             //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
             //player.Play();
         }
@@ -245,7 +249,52 @@ namespace FormalMethods
                 }                
             }
             return arrows;
-        }                       
+        }
+
+        private List<NodeArrow> parseNDFA(string inputNodes, string inputA, string inputB)
+        {
+            List<NodeArrow> arrows = new List<NodeArrow>();
+            string[] separators = { "\r\n" };
+            string[] grammar1 = ((inputNodes).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            string[] grammar2 = ((inputA).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            string[] grammar3 = ((inputB).Trim()).Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+            FMCollection[] fmArray = new FMCollection[grammar1.Length];
+            for (int i = 0; i < grammar1.Length; i++)
+            {
+                string[] stepsA = grammar2[i].Split(',');
+                string[] stepsB = grammar3[i].Split(',');                
+                for (int x = 0; x < stepsA.Length; x++) {
+                    stepsA[x] = "a" + stepsA[x];                
+                }
+                for (int x = 0; x < stepsB.Length; x++) {
+                    stepsB[x] = "b" + stepsB[x];
+                }
+
+                int originalLength = stepsA.Length;
+                Array.Resize<string>(ref stepsA, originalLength + stepsB.Length);
+                Array.Copy(stepsB, 0, stepsA, originalLength, stepsB.Length );
+
+                fmArray[i] = new FMCollection(grammar1[i], stepsA);                              
+            }
+
+            for (int i = 0; i < fmArray.Length; i++)
+            {
+                for (int i2 = 0; i2 < fmArray[i].getSteps().Length; i2++)
+                {
+                    if ((fmArray[i].getSteps()[i2]).Length == 1) // no following step, final Node
+                    {
+                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), fmArray[i].getStartCharacter(), fmArray[i].getSteps()[i2][0], true));
+                    }
+                    else
+                    {
+                        arrows.Add(new NodeArrow(fmArray[i].getStartCharacter(), (fmArray[i].getSteps()[i2]).Substring(1), fmArray[i].getSteps()[i2][0]));
+                    }
+                }                
+            }
+
+            return arrows;
+        }       
     }
 
     public class RegExSection
