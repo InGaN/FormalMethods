@@ -29,27 +29,28 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lbl_grammarForm = new System.Windows.Forms.Label();
+            this.label_grammarForm = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.lbl_grammarForm);
+            this.panel1.Controls.Add(this.label_grammarForm);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(347, 327);
             this.panel1.TabIndex = 0;
             // 
-            // lbl_grammarForm
+            // label_grammarForm
             // 
-            this.lbl_grammarForm.AutoSize = true;
-            this.lbl_grammarForm.Location = new System.Drawing.Point(13, 13);
-            this.lbl_grammarForm.Name = "lbl_grammarForm";
-            this.lbl_grammarForm.Size = new System.Drawing.Size(35, 13);
-            this.lbl_grammarForm.TabIndex = 0;
-            this.lbl_grammarForm.Text = "label1";
+            this.label_grammarForm.AutoSize = true;
+            this.label_grammarForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_grammarForm.Location = new System.Drawing.Point(13, 13);
+            this.label_grammarForm.Name = "label_grammarForm";
+            this.label_grammarForm.Size = new System.Drawing.Size(166, 25);
+            this.label_grammarForm.TabIndex = 0;
+            this.label_grammarForm.Text = "empty Grammar...";
             // 
             // Form_Grammar
             // 
@@ -68,6 +69,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label lbl_grammarForm;
+        private System.Windows.Forms.Label label_grammarForm;
     }
 }

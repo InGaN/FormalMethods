@@ -51,7 +51,9 @@ namespace FormalMethods
         private void btn_Grammar_Click(object sender, EventArgs e)
         {
             Form_Grammar formGrammar = new Form_Grammar();
-            formGrammar.Text = "Regex -> Grammar";
+            nodes = parseNodes(nodesTextBox.Text);
+            if (rb1_regex.Checked) { formGrammar.drawToGrammar(parseRegularExpression(regexTextBox.Text)); formGrammar.Text = "Regex -> Grammar"; }
+            else if (rb1_NDFA.Checked) { formGrammar.drawToGrammar(parseNDFA(textBox_table1.Text, textBox_table2.Text, textBox_table3.Text)); formGrammar.Text = "NDFA table -> Grammar"; }
             formGrammar.Show();
         }
 
@@ -70,9 +72,9 @@ namespace FormalMethods
             nodesTextBox.Text = (nodesTextBox.Text.Length == 0) ? "S, q1, 40" : "";
             regexTextBox.Text = (regexTextBox.Text.Length == 0) ? "(aab|abab|b)(ab)(a|b)" : "";
             grammarTextBox.Text = (grammarTextBox.Text.Length == 0) ? System.Text.RegularExpressions.Regex.Replace("S>a1|b2|a3 \r\n 1>a3 \r\n 2>b3 \r\n 3>a4|a|b \r\n 4>a", @"[^\S\r\n]+", "") : ""; // removes whitespace except newlines
-            textBox_table1.Text = (textBox_table1.Text.Length == 0) ? "S\r\n*q1\r\nq2\r\nq3\r\n*q4" : "";
-            textBox_table2.Text = (textBox_table2.Text.Length == 0) ? "q1,q3\r\nq2\r\nq3\r\nq3\r\n-" : "";
-            textBox_table3.Text = (textBox_table3.Text.Length == 0) ? "q2\r\n-\r\nS\r\nq2,q4\r\n-" : "";
+            textBox_table1.Text = (textBox_table1.Text.Length == 0) ? "S\r\n*1\r\n2\r\n3\r\n*4" : "";
+            textBox_table2.Text = (textBox_table2.Text.Length == 0) ? "1,3\r\n2\r\n3\r\n3\r\n-" : "";
+            textBox_table3.Text = (textBox_table3.Text.Length == 0) ? "2\r\n-\r\nS\r\n2,4\r\n-" : "";
             //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"spider.wav");
             //player.Play();
         }
