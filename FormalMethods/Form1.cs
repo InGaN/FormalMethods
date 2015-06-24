@@ -14,6 +14,7 @@ namespace FormalMethods
     {
         private string[] nodes;
         private int nodeCounter = 0;
+        Form_Drawing formDraw;
 
         public Form1()
         {
@@ -26,7 +27,7 @@ namespace FormalMethods
 
         private void btn_NDFA1_Click(object sender, EventArgs e)
         {
-            Form_Drawing formDraw = new Form_Drawing();
+            formDraw = new Form_Drawing();
             formDraw.Show();
             formDraw.drawNDFA(regexTextBox.Text);
             //formDraw.regExtoNDFA(regexTextBox.Text);
@@ -305,6 +306,11 @@ namespace FormalMethods
             }
 
             return arrows;
+        }
+
+        private void btn_DFA_Click(object sender, EventArgs e)
+        {
+            formDraw.drawDFA();
         }       
     }
 

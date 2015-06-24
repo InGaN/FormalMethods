@@ -42,6 +42,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btn_NDFA2 = new System.Windows.Forms.Button();
             this.btn_Grammar = new System.Windows.Forms.Button();
+            this.btn_DFA = new System.Windows.Forms.Button();
+            this.btn_DFArev = new System.Windows.Forms.Button();
             this.grammarTextBox = new System.Windows.Forms.TextBox();
             this.label_grammar = new System.Windows.Forms.Label();
             this.label_nodes = new System.Windows.Forms.Label();
@@ -53,8 +55,6 @@
             this.textBox_table1 = new System.Windows.Forms.TextBox();
             this.textBox_table2 = new System.Windows.Forms.TextBox();
             this.textBox_table3 = new System.Windows.Forms.TextBox();
-            this.btn_DFA = new System.Windows.Forms.Button();
-            this.btn_DFArev = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -241,6 +241,25 @@
             this.btn_Grammar.UseVisualStyleBackColor = true;
             this.btn_Grammar.Click += new System.EventHandler(this.btn_Grammar_Click);
             // 
+            // btn_DFA
+            // 
+            this.btn_DFA.Location = new System.Drawing.Point(3, 102);
+            this.btn_DFA.Name = "btn_DFA";
+            this.btn_DFA.Size = new System.Drawing.Size(93, 25);
+            this.btn_DFA.TabIndex = 9;
+            this.btn_DFA.Text = "Draw DFA";
+            this.btn_DFA.UseVisualStyleBackColor = true;
+            this.btn_DFA.Click += new System.EventHandler(this.btn_DFA_Click);
+            // 
+            // btn_DFArev
+            // 
+            this.btn_DFArev.Location = new System.Drawing.Point(3, 133);
+            this.btn_DFArev.Name = "btn_DFArev";
+            this.btn_DFArev.Size = new System.Drawing.Size(93, 38);
+            this.btn_DFArev.TabIndex = 10;
+            this.btn_DFArev.Text = "Draw DFA (reverse)";
+            this.btn_DFArev.UseVisualStyleBackColor = true;
+            // 
             // grammarTextBox
             // 
             this.grammarTextBox.Location = new System.Drawing.Point(243, 84);
@@ -282,7 +301,7 @@
             this.tableLayoutPanel_NDFA.ColumnCount = 3;
             this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.29268F));
             this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.70732F));
-            this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel_NDFA.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel_NDFA.Controls.Add(this.table_lableTitle, 0, 0);
             this.tableLayoutPanel_NDFA.Controls.Add(this.table_lable1, 1, 0);
             this.tableLayoutPanel_NDFA.Controls.Add(this.table_lable2, 2, 0);
@@ -305,7 +324,7 @@
             this.table_lableTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.table_lableTitle.Location = new System.Drawing.Point(5, 2);
             this.table_lableTitle.Name = "table_lableTitle";
-            this.table_lableTitle.Size = new System.Drawing.Size(57, 18);
+            this.table_lableTitle.Size = new System.Drawing.Size(55, 18);
             this.table_lableTitle.TabIndex = 0;
             this.table_lableTitle.Text = "NDFA";
             // 
@@ -314,7 +333,7 @@
             this.table_lable1.AutoSize = true;
             this.table_lable1.Dock = System.Windows.Forms.DockStyle.Left;
             this.table_lable1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.table_lable1.Location = new System.Drawing.Point(70, 2);
+            this.table_lable1.Location = new System.Drawing.Point(68, 2);
             this.table_lable1.Name = "table_lable1";
             this.table_lable1.Size = new System.Drawing.Size(18, 18);
             this.table_lable1.TabIndex = 1;
@@ -325,7 +344,7 @@
             this.table_lable2.AutoSize = true;
             this.table_lable2.Dock = System.Windows.Forms.DockStyle.Left;
             this.table_lable2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.table_lable2.Location = new System.Drawing.Point(154, 2);
+            this.table_lable2.Location = new System.Drawing.Point(151, 2);
             this.table_lable2.Name = "table_lable2";
             this.table_lable2.Size = new System.Drawing.Size(18, 18);
             this.table_lable2.TabIndex = 2;
@@ -338,46 +357,28 @@
             this.textBox_table1.Location = new System.Drawing.Point(5, 25);
             this.textBox_table1.Multiline = true;
             this.textBox_table1.Name = "textBox_table1";
-            this.textBox_table1.Size = new System.Drawing.Size(57, 194);
+            this.textBox_table1.Size = new System.Drawing.Size(55, 194);
             this.textBox_table1.TabIndex = 3;
             // 
             // textBox_table2
             // 
             this.textBox_table2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox_table2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_table2.Location = new System.Drawing.Point(70, 25);
+            this.textBox_table2.Location = new System.Drawing.Point(68, 25);
             this.textBox_table2.Multiline = true;
             this.textBox_table2.Name = "textBox_table2";
-            this.textBox_table2.Size = new System.Drawing.Size(76, 194);
+            this.textBox_table2.Size = new System.Drawing.Size(75, 194);
             this.textBox_table2.TabIndex = 4;
             // 
             // textBox_table3
             // 
             this.textBox_table3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox_table3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_table3.Location = new System.Drawing.Point(154, 25);
+            this.textBox_table3.Location = new System.Drawing.Point(151, 25);
             this.textBox_table3.Multiline = true;
             this.textBox_table3.Name = "textBox_table3";
-            this.textBox_table3.Size = new System.Drawing.Size(75, 194);
+            this.textBox_table3.Size = new System.Drawing.Size(78, 194);
             this.textBox_table3.TabIndex = 5;
-            // 
-            // btn_DFA
-            // 
-            this.btn_DFA.Location = new System.Drawing.Point(3, 102);
-            this.btn_DFA.Name = "btn_DFA";
-            this.btn_DFA.Size = new System.Drawing.Size(93, 25);
-            this.btn_DFA.TabIndex = 9;
-            this.btn_DFA.Text = "Draw DFA";
-            this.btn_DFA.UseVisualStyleBackColor = true;
-            // 
-            // btn_DFArev
-            // 
-            this.btn_DFArev.Location = new System.Drawing.Point(3, 133);
-            this.btn_DFArev.Name = "btn_DFArev";
-            this.btn_DFArev.Size = new System.Drawing.Size(93, 38);
-            this.btn_DFArev.TabIndex = 10;
-            this.btn_DFArev.Text = "Draw DFA (reverse)";
-            this.btn_DFArev.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

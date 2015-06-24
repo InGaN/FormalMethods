@@ -19,6 +19,10 @@ namespace FormalMethods
         List<char> exceptions = new List<char> { '(', ')', '+', '|', '*' };
         int counter = 0;
         int endCounter = 1;
+        List<Node> NDFAnodes = new List<Node>();
+        List<Node> DFAnodes = new List<Node>();
+        Dictionary<Node, char> nodes = new Dictionary<Node, char>();
+        string NDFA = "NULL";
 
         public Form_Drawing()
         {
@@ -350,10 +354,195 @@ namespace FormalMethods
                                               getProcessStartInfoQuery,
                                               registerLayoutPluginCommand);
 
-            byte[] output = wrapper.GenerateGraph(regExtoNDFA(regEx), Enums.GraphReturnType.Png);
+            NDFA = regExtoNDFA(regEx);
+            
+            byte[] output = wrapper.GenerateGraph(NDFA, Enums.GraphReturnType.Png);
             //byte[] output2 = wrapper.GenerateGraph("digraph{" + stringAnalyzer(regEx) + "}",Enums.GraphReturnType.Png);
             MemoryStream ms = new MemoryStream(output);
             pictureBox1.Image = Image.FromStream(ms);
+        }
+
+        public void drawDFA()
+        {
+            if (NDFA != "NULL")
+            {
+                List<char> labels = new List<char>();
+                List<string> nodeTransitions = NDFA.Split(';').ToList<string>();
+                for (int i = 1; i < nodeTransitions.Count; i++)
+                {
+                    string nodeName = "";
+                    char c = ' ';
+                    int j = 0;
+                    while (c != '-' && c != '[')
+                    {
+                        c = nodeTransitions[i][j];
+                        if (c == '-' || c == '[')
+                            break;
+                        nodeName += c;
+                        j++;
+                    }
+
+                    bool sameName = false;
+                    for (int x = 0; x < NDFAnodes.Count; x++)
+                    {
+                        if (NDFAnodes[x].NodeName == nodeName)
+                            sameName = true;
+                    }
+                    if (!sameName)
+                        NDFAnodes.Add(new Node(nodeName));
+                    if (NDFAnodes.Count == 0)
+                    {
+                        NDFAnodes.Add(new Node(nodeName));
+                    }
+
+                }
+
+                for (int i = 1; i < nodeTransitions.Count - 1; i++)
+                {
+                    string nodeName = "";
+                    char c = ' ';
+                    int j = 0;
+                    while (c != '-' && c != '[')
+                    {
+                        c = nodeTransitions[i][j];
+                        if (c == '-' || c == '[')
+                            break;
+                        nodeName += c;
+                        j++;
+                    }
+                    List<string> splitString = nodeTransitions[i].Split('[').ToList<string>();
+                    string secondNodeName = splitString[0].Substring(j + 2);
+                    char label = splitString[1][8];
+                    for (int x = 0; x < NDFAnodes.Count; x++)
+                    {
+                        if (NDFAnodes[x].NodeName == nodeName)
+                        {
+                            for (int z = 0; z < NDFAnodes.Count; z++)
+                            {
+                                if (NDFAnodes[z].NodeName == secondNodeName)
+                                {
+                                    NDFAnodes[x].transistions.Add(NDFAnodes[z], label);
+                                    if (!labels.Contains(label) && label != 'e')
+                                        labels.Add(label);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Node newNode = new Node(NDFAnodes[0].NodeName);
+                newNode.transistions = newNode.transistions.Union(NDFAnodes[0].transistions).ToDictionary(k => k.Key, v => v.Value);
+                for (int i = 0; i < NDFAnodes[0].transistions.Count; i++)
+                {
+                    newNode = makeNode(NDFAnodes[0].transistions.ElementAt(i).Key, NDFAnodes[0].transistions.ElementAt(i).Value, false, newNode);
+                }
+                DFAnodes.Add(newNode);
+                while (newNode.transistions.Count != 0)
+                {
+                    //Node newNode2 = new Node(newNode.transistions.ElementAt(0).Key.NodeName);
+                    //newNode2.transistions = newNode2.transistions.Union(NDFAnodes[j].transistions).ToDictionary(k => k.Key, v => v.Value);
+                    nodes = new Dictionary<Node, char>();
+                    for (int i = 0; i < newNode.transistions.Count; i++)
+                    {
+                        Node newNode2 = new Node("");
+                        bool makeNew = false;
+                        for (int j = 0; j < nodes.Count; j++)
+                        {
+                            if (!nodes.ContainsValue(newNode.transistions.ElementAt(i).Value))
+                            {
+                                makeNew = true;
+                            }
+                            else
+                            {
+                                newNode2 = new Node(nodes.ElementAt(j).Key.NodeName);
+                                newNode2.transistions = newNode2.transistions.Union(nodes.ElementAt(j).Key.transistions).ToDictionary(k => k.Key, v => v.Value);
+                            }
+                        }
+
+                        newNode2.NodeName += newNode.transistions.ElementAt(i).Key.NodeName;
+                        newNode2.transistions = newNode2.transistions.Union(newNode.transistions.ElementAt(i).Key.transistions).ToDictionary(k => k.Key, v => v.Value);
+                        for (int r = 0; r < newNode2.transistions.Count; r++)
+                        {
+
+                            if (newNode2.transistions.ElementAt(r).Value == 'e')
+                            {
+                                for (int l = 0; l < labels.Count; l++)
+                                {
+                                    Node newNode2old = new Node(newNode2);
+                                    newNode2 = makeNode(newNode2.transistions.ElementAt(r).Key, labels[l], true, newNode2);
+                                    if (!nodes.ContainsValue(labels[l]))
+                                    {
+                                        nodes.Add(newNode2, labels[l]);
+                                    }
+                                    else
+                                    {
+                                        int w = 0;
+                                        for (int q = 0; q < nodes.Count; q++)
+                                        {
+                                            if (nodes.ElementAt(q).Value == labels[l])
+                                            {
+                                                w = q;
+                                            }
+                                        }
+                                        nodes.ElementAt(w).Key.NodeName = newNode2.NodeName;
+                                        nodes.ElementAt(w).Key.transistions = newNode2.transistions.Union(nodes.ElementAt(w).Key.transistions).ToDictionary(k => k.Key, v => v.Value);
+                                    }
+                                    newNode2 =  new Node(newNode2old);
+                                }
+                            }
+                            else
+                            {
+
+                                newNode2 = makeNode(newNode2.transistions.ElementAt(r).Key, newNode.transistions.ElementAt(i).Value, false, newNode2);
+                                if (!nodes.ContainsValue(newNode.transistions.ElementAt(i).Value))
+                                {
+                                    //nodes.Add(newNode2, newNode.transistions.ElementAt(i).Value);
+                                }
+                                else
+                                {
+                                    int w = 0;
+                                    for (int q = 0; q < nodes.Count; q++)
+                                    {
+                                        if (nodes.ElementAt(q).Value == newNode.transistions.ElementAt(i).Value)
+                                        {
+                                            w = q;
+                                        }
+                                    }
+                                    nodes.ElementAt(w).Key.NodeName = newNode2.NodeName;
+                                    nodes.ElementAt(w).Key.transistions = newNode2.transistions.Union(nodes.ElementAt(w).Key.transistions).ToDictionary(k => k.Key, v => v.Value);
+                                }
+                            }
+                            string test2 = "test";
+                            newNode = new Node(newNode2);
+                        }
+                    }
+                }
+                string test = "test";
+            }
+        }
+
+
+
+        public Node makeNode(Node n,char transistion, bool canTrans,Node NewNode)
+        {
+            NewNode.NodeName += n.NodeName;
+            NewNode.transistions = NewNode.transistions.Union(n.transistions).ToDictionary(k => k.Key, v => v.Value);
+
+            for(int i =0 ;i < n.transistions.Count;i++)
+            {
+                if (n.transistions.ElementAt(i).Value == 'e')
+                {
+                    makeNode(n.transistions.ElementAt(i).Key, transistion, canTrans,NewNode);
+                }
+                else
+                {
+                    if (n.transistions.ElementAt(i).Value == transistion && canTrans)
+                    {
+                        makeNode(n.transistions.ElementAt(i).Key, transistion, false, NewNode);
+                    }
+                }
+            }
+            return NewNode;
         }
 
         public string stringAnalyzer(string s)
